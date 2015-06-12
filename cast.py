@@ -6,6 +6,47 @@ import ast
 import sys
 import _ast
 
+
+class Module(mod):
+    def equals(self,node,other):
+        if isinstance(node,list):
+            for i in len(node):
+                if not self.equals(node[i],other[i]):
+                    return False
+            return True
+        if isinstance(node,str):
+            if(isinstance(other,ast.Str)):
+                return node==other.s
+            return node==other
+
+        for f in list(node._fields)+dir(node):
+            if str(f).startswith("_"): continue
+            a=node.__getattribute__(f)
+            b=other.__getattribute__(f)
+            if not (type(a)==type(b) or isinstance(a,type(b))):
+                return False
+            if isinstance(a,list):
+                for i in range(0,len(a)):
+                    if not self.equals(a[i],b[i]):
+                        return False
+                continue
+            if not a==b:
+                return False
+        return True
+
+    def __eq__(self, other):
+        for node in self.body:
+            ok=False
+            for cmp in other.body:
+                if type(node)==type(cmp) or isinstance(node,type(cmp)):
+                    if self.equals(node,cmp):
+                        ok=True
+                        break
+            if ok:
+                continue
+            return False
+        return True
+
 # class Args(list):
 #     pass
 
