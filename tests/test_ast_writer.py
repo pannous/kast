@@ -1,15 +1,16 @@
 import ast
 import os
-import ast2json
+# import ast2json
 from ast import *
 import ast_export
 
 # import codegen
 from astor import codegen
+import cast
 
 source=os.path.realpath(__file__)
 # source='/Users/me/angelos/kast/tests/hi.py'
-source='/Users/me/angelos/kast/ast_import.py'
+source='/Users/me/angle/cast/ast_import.py'
 print(source)
 contents=open(source).readlines()# all()
 contents="\n".join(contents)
@@ -20,6 +21,11 @@ source="(string)" # compile from inline string source:
 # contents="x=1;x=x+1"
 # contents="x=1;x++" # INVALID!
 contents="x=6;x%=3"
+contents="def x(y):pass"
+#PY3:
+# Module([FunctionDef('x', arguments([arg('y', None)], None, [], [], None, []), [Pass()], [], None)])
+
+# contents="for i in [1,2,3]:print(i)"
 # contents="x=y[1]"
 # contents="self.x(1)"
 # contents="(1 or 2) and 0" # 0  BoolOp(And(), [BoolOp(Or(), [Num(1), Num(2)]), Num(0)])
@@ -56,7 +62,7 @@ x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
 print(x)
 
 
-j=ast2json.ast2json(file_ast)
+# j=ast2json.ast2json(file_ast)
 # print(j)
 # assert code==code2
 # code=compile(open(source), source, 'exec')
@@ -80,7 +86,7 @@ my_ast=Module(body=[
             args=[Num(n=10, lineno=1, col_offset=15)],
             keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=9),
             body=[
-                Print(
+                cast.Print(
                     value="dbg",
                     dest=None,
                     values=[Name(id='i', ctx=Load(), lineno=1, col_offset=26)],

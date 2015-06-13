@@ -10,6 +10,9 @@ import os
 from ast import *
 
 # todo: consider re-implementing with the visitor pattern, see astor.codegen
+import cast
+
+
 class Ignore:
     pass
 
@@ -85,7 +88,7 @@ class Visitor(NodeVisitor):
             return
         global indent
         tag = type(node).__name__
-        if (isinstance(node,ast.Print) or tag=='Print'):
+        if (isinstance(node,cast.Print) or tag=='Print'):
             pass
         if isinstance(node,list):
             raise "MUST NOT BE LIST: "+str(node)
@@ -94,7 +97,7 @@ class Visitor(NodeVisitor):
         yet_visited[node]=True
 
         if isinstance(node,str) or isinstance(node,int):
-            print node
+            print(node)
             return
         if isinstance(node,expr_context):return
         # if isinstance(node,operator):return
@@ -137,12 +140,13 @@ class Visitor(NodeVisitor):
         #     if isinstance(a,Num):a=a.n
         #     attribs=attribs+" %s='%s'"%(f,a)
         # print node.body
-        print "\t"*indent+ "<%s%s"%(tag,attributes),
+        # print("\t" * indent + "<%s%s" % (tag, attributes), end=' ')
+        print "\t" * indent + "<%s%s" % (tag, attributes),
         if len(goodfields)==0:# and not isinstance(node,ast.Module):
-            print "/>"
+            print("/>")
             return
         else:
-            print ">"
+            print(">")
 
         indent=indent+1
         for f in goodfields:
@@ -153,7 +157,7 @@ class Visitor(NodeVisitor):
                 if a in yet_visited:continue
                 a=[a]
             if len(a)==0:continue
-            print "\t"*(indent)+"<%s>"%(str(f))
+            print("\t" * (indent) + "<%s>" % (str(f)))
             for x in a:
                 if x in yet_visited: continue
                 if not x:
@@ -162,11 +166,11 @@ class Visitor(NodeVisitor):
                 indent=indent+1
                 self.generic_visit(x)
                 indent=indent-1
-            print "\t"*(indent)+"</%s>"%(str(f))
+            print("\t" * (indent) + "</%s>" % (str(f)))
 
         NodeVisitor.generic_visit(self, node)#??
         indent=indent-1
-        print "\t"*indent+"</%s>"%(tag)
+        print("\t" * indent + "</%s>" % (tag))
 
 
 # j=json.dumps(ast.__dict__);
