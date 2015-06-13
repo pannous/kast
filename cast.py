@@ -79,14 +79,14 @@ if sys.version_info > (3,0):
             self.handlers.append(r)
         rescue = property(lambda self:self.handlers, set_rescue)
 else:
-    class TryExcept(ast.TryExcept):
-        def __init__(self, **kwargs):
-            self.orelse=None
-            self.handlers=[]
+class TryExcept(ast.TryExcept):
+    def __init__(self, **kwargs):
+        self.orelse=None
+        self.handlers=[]
 
-        def set_rescue(self,r):
-            self.handlers.append(r)
-        rescue = property(lambda self:self.handlers, set_rescue)
+    def set_rescue(self,r):
+        self.handlers.append(r)
+    rescue = property(lambda self:self.handlers, set_rescue)
 
 
 class ExceptHandler(ast.ExceptHandler):
@@ -162,7 +162,8 @@ class Assign(ast.Assign):
     variables = property(lambda self:self.value, set_val)
 
 # a.split('b') =>
-# Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
+# Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')],keywords=[], starargs=None, kwargs=None
+#     Call(func=Name(id='print',ctx=Load()), args=Str('ok'),keywords=[], starargs=None, kwargs=None)
 class Call(ast.Call):
     def __init__(self, **kwargs):
         self.args=[]
@@ -244,10 +245,19 @@ if sys.version_info > (3,0):
 else:
     class Print(ast.Print):
         pass
-          # def __init__(self, **kwargs):
-          #     super(ast.Print,self).__init__(*kwargs)
-          #     if not "nl" in kwargs:
-          #         self.nl=True
+
+    class arg(ast.Name):
+        def __init__(self, **kwargs):
+            self.ctx=Param()
+            super(ast.Name,self).__init__(*kwargs)
+        # _attributes = (
+        #     'lineno',
+        #     'col_offset',
+        # )
+        # _fields = (
+        #     'arg',
+        #     'annotation',
+        # )
 
 
 # class Name(ast.Name):
@@ -411,3 +421,13 @@ for k in types.keys():
 types.update(mapped_types)
 
 assert Name(id='xyz',ctx=Load())=='xyz'
+
+
+def name(param):
+    return Name(id=param,ctx=Load())
+
+def call(func,args):
+    if isinstance(func,str):    func=name(func)
+    if not isinstance(args,list):args=[args]
+    return Call(func=func,args=args,keywords=[], starargs=None, kwargs=None)
+    # Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
