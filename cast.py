@@ -154,7 +154,8 @@ class Assign(ast.Assign):
     variables = property(lambda self:self.value, set_val)
 
 # a.split('b') =>
-# Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
+# Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')],keywords=[], starargs=None, kwargs=None
+#     Call(func=Name(id='print',ctx=Load()), args=Str('ok'),keywords=[], starargs=None, kwargs=None)
 class Call(ast.Call):
     def __init__(self, **kwargs):
         self.args=[]
@@ -412,3 +413,13 @@ for k,v in types.items():
     types["{http://angle-lang.org}"+k.lower()]=types[k]
 
 assert Name(id='xyz',ctx=Load())=='xyz'
+
+
+def name(param):
+    return Name(id=param,ctx=Load())
+
+def call(func,args):
+    if isinstance(func,str):    func=name(func)
+    if not isinstance(args,list):args=[args]
+    return Call(func=func,args=args,keywords=[], starargs=None, kwargs=None)
+    # Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
