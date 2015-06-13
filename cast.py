@@ -102,6 +102,8 @@ class Num(ast.Num):
 
     def __repr__(self): return str(self.n)
 
+# class arg(ast.ar
+
 class Name(ast.Name):
     def set_name(self,id):
         if(isinstance(id,ast.Name)):
@@ -120,6 +122,8 @@ class Str(ast.Str):
     value = property(lambda self:self.s, set_value)
     name=property(lambda self:self.s,set_value)
     def __str__(self):return s
+
+
 
 class For(ast.For):
     def __init__(self, **kwargs):
@@ -235,6 +239,19 @@ if sys.version_info > (3,0):
             'globals',
             'locals',
         )
+else:
+    class arg(ast.Name):
+        def __init__(self, **kwargs):
+            self.ctx=Param()
+            super(ast.Name,self).__init__(*kwargs)
+        # _attributes = (
+        #     'lineno',
+        #     'col_offset',
+        # )
+        # _fields = (
+        #     'arg',
+        #     'annotation',
+        # )
 
 
 # class Name(ast.Name):
