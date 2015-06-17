@@ -68,6 +68,17 @@ class Return(ast.Return):
     body = property(lambda self:self.value, set_val)
     variable = property(lambda self:self.value, set_val)
 
+
+if sys.version_info > (3,0):
+    class TryExcept(ast.Try):
+        def __init__(self, **kwargs):
+            self.orelse=None
+            self.handlers=[]
+
+        def set_rescue(self,r):
+            self.handlers.append(r)
+        rescue = property(lambda self:self.handlers, set_rescue)
+else:
 class TryExcept(ast.TryExcept):
     def __init__(self, **kwargs):
         self.orelse=None
@@ -76,6 +87,7 @@ class TryExcept(ast.TryExcept):
     def set_rescue(self,r):
         self.handlers.append(r)
     rescue = property(lambda self:self.handlers, set_rescue)
+
 
 class ExceptHandler(ast.ExceptHandler):
     def __init__(self, **kwargs):
@@ -102,8 +114,6 @@ class Num(ast.Num):
 
     def __repr__(self): return str(self.n)
 
-# class arg(ast.ar
-
 class Name(ast.Name):
     def set_name(self,id):
         if(isinstance(id,ast.Name)):
@@ -122,8 +132,6 @@ class Str(ast.Str):
     value = property(lambda self:self.s, set_value)
     name=property(lambda self:self.s,set_value)
     def __str__(self):return s
-
-
 
 class For(ast.For):
     def __init__(self, **kwargs):
@@ -218,12 +226,6 @@ class FunctionDef(ast.FunctionDef):
         self.args=args()
         super(ast.FunctionDef,self).__init__(*kwargs)
 
-class Print(ast.Print):
-      def __init__(self, **kwargs):
-          super(ast.Print,self).__init__(*kwargs)
-          if not "nl" in kwargs:
-              self.nl=True
-
 
 if sys.version_info > (3,0):
      # PYTHON 3 HACK!!
@@ -241,6 +243,9 @@ if sys.version_info > (3,0):
             'locals',
         )
 else:
+    class Print(ast.Print):
+        pass
+
     class arg(ast.Name):
         def __init__(self, **kwargs):
             self.ctx=Param()
@@ -347,7 +352,6 @@ types={ # see _ast.py , F12:
 "Pow":Pow,
 "Print":Print,
 'Raise':Raise,
-"Repr":Repr,
 "Return":Return,
 "RShift":RShift,
 "Set":Set,
@@ -359,7 +363,6 @@ types={ # see _ast.py , F12:
 "Subscript":Subscript,
 "Suite":Suite,
 "TryExcept":TryExcept,
-"TryFinally":TryFinally,
 "Tuple":Tuple,
 "UAdd":UAdd,
 "UnaryOp":UnaryOp,
@@ -367,6 +370,11 @@ types={ # see _ast.py , F12:
 "While":While,
 "With":With
     }
+
+if sys.version_info < (3,0):
+    types["Repr"]=ast.Repr
+    types["TryFinally"]=ast.TryFinally
+
 
 # workaround: alias is keyword in ruby!
 mapped_types={
@@ -404,13 +412,13 @@ mapped_types={
     "Then":expr #Value
 }
 
-
-types.update(mapped_types)
-for k,v in types.items():
+for k in types.keys():
     if(k=='Raise'):continue
     if(k=='Let'):continue
-    types[k.lower()]=types[k]
-    types["{http://angle-lang.org}"+k.lower()]=types[k]
+    mapped_types[k.lower()]=types[k]
+    mapped_types["{http://angle-lang.org}"+k.lower()]=types[k]
+
+types.update(mapped_types)
 
 assert Name(id='xyz',ctx=Load())=='xyz'
 
