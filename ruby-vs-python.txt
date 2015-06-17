@@ -40,7 +40,6 @@
 # python +: named parameters
 # python +: py2exe
 # python +: ternary operator     ok = 'Yes' if condition == 'OK' else 'No'
-
 # python +: better reflection + docs (dir, help)
 # python +-: functions proper(!) 1st class citizens [problem: () not default!]
 # python +-: properties ok'ish:  p=property(getter,setter)

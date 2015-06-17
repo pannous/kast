@@ -79,14 +79,14 @@ if sys.version_info > (3,0):
             self.handlers.append(r)
         rescue = property(lambda self:self.handlers, set_rescue)
 else:
-class TryExcept(ast.TryExcept):
-    def __init__(self, **kwargs):
-        self.orelse=None
-        self.handlers=[]
+    class TryExcept(ast.TryExcept):
+        def __init__(self, **kwargs):
+            self.orelse=None
+            self.handlers=[]
 
-    def set_rescue(self,r):
-        self.handlers.append(r)
-    rescue = property(lambda self:self.handlers, set_rescue)
+        def set_rescue(self,r):
+            self.handlers.append(r)
+        rescue = property(lambda self:self.handlers, set_rescue)
 
 
 class ExceptHandler(ast.ExceptHandler):

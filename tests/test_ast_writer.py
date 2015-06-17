@@ -6,7 +6,7 @@ import ast_export
 
 # import codegen
 from astor import codegen
-import cast
+import kast
 
 source=os.path.realpath(__file__)
 # source='/Users/me/angelos/kast/tests/hi.py'
@@ -86,7 +86,7 @@ my_ast=Module(body=[
             args=[Num(n=10, lineno=1, col_offset=15)],
             keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=9),
             body=[
-                cast.Print(
+                kast.Print(
                     value="dbg",
                     dest=None,
                     values=[Name(id='i', ctx=Load(), lineno=1, col_offset=26)],

@@ -12,7 +12,7 @@ import os
 from ast import *
 
 # todo: consider re-implementing with the visitor pattern, see astor.codegen
-import cast
+import kast
 
 
 class Ignore:
@@ -90,7 +90,7 @@ class Visitor(NodeVisitor):
             return
         global indent
         tag = type(node).__name__
-        if (isinstance(node,cast.Print) or tag=='Print'):
+        if (isinstance(node,kast.Print) or tag=='Print'):
             pass
         if isinstance(node,list):
             raise "MUST NOT BE LIST: "+str(node)
