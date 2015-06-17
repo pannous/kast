@@ -4,6 +4,9 @@ require "rubyast" # using jruby/ast in normal ruby!
 require "yaml"
 # sudo gem install ruby_parser sexp->xml
 
+# SEE CurrentRuby https://github.com/whitequark/parser
+# https://rubygems.org/gems/ast
+
 # file="../test/unit/condition_test.rb"
 # file="../src/core/english-parser.rb"
 

@@ -4,6 +4,8 @@
 
 # Deprecated since version 2.6: The compiler package has been removed in Python 3.   WAAAH!! WTF! egal -> breaks a lot!!
 
+# http://m-labs.hk/pythonparser/ PythonParser is a Python parser written specifically for use in TOOLING. It parses source code into an AST that is a superset of Python’s built-in ast module, but returns precise location information for every token
+
 import ast
 import json
 import os
