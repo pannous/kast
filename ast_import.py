@@ -15,8 +15,8 @@ from kast import *
 from kast_util import *
 from transforms.kast_rewriter import *
 
-call_map=xml =yaml.load(open("call-map.yml"))
-const_map=xml =yaml.load(open("const-map.yml"))
+call_map=xml =yaml.load(open("transforms/call-map.yml"))
+const_map=xml =yaml.load(open("transforms/const-map.yml"))
 
 global modules
 global classes
