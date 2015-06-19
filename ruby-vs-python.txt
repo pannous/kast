@@ -67,9 +67,6 @@ more: http://c2.com/cgi/wiki?PythonProblems
 Yes.
 
 
-
-
-
 ** ValueError: list.remove(x): x not in list
 ** RUBY: # (the.nodes - old_nodes).each{|n| n.invalidate}
 ** PYTHON: -- for fuck in old_nodes:
@@ -85,3 +82,4 @@ def dispatch printType(Void x) {
 
 to print an empty car:
   "it's null"
+

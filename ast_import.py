@@ -8,6 +8,7 @@
 import os
 import xml.etree.ElementTree as Xml
 import re
+import __builtin__
 import yaml
 import kast
 from kast import *
@@ -146,6 +147,8 @@ def build(node,parent=None):
         return Num(n=int(node.text))
     elif(tag=="Num"):
         return Num(n=int(node.attrib["value"]))
+    elif tag=="value":
+        return build(children[0])
     elif(tag=="If"):
         test = build(children[0])
         body = [build(children[1])]
@@ -160,28 +163,32 @@ def build(node,parent=None):
         return name('False') #WTF
     elif(tag=="Nil"):
         return name('None') #WTF
-    elif(tag=="String"):
+    elif(tag=="String" or tag=="string"):
         xs=map(build, children)
         def bin_add(a,b):
             return BinOp(a, Add(),b)
-        xss=reduce(bin_add, xs[1:], xs[0]) # nice, Karsten++
+        xss=reduce(bin_add, xs[1:], xs[0]) # BinOp the whole list, nice Karsten++
         return xss
-    elif(tag=="Str"):
+    elif(tag=="Str" or tag=="str" or tag=="var" or tag=="variable"):
         if(hasattr(node,'value')): return Str(s=node.attrib['value'])
         else:return Str(s=node.text)
     # elif(tag=="Call" and parent=="Assign"):
     #     tag="Variable" #VCall in ruby
-    elif(tag=="Argument"):
+    elif(tag=="Argument" or tag=="argument"):
         if(len(children)>0):
             return build(children[0])
         return name(_name_)
-    elif tag=="Call" and _name_=='[]':
+    elif (tag=="Call" or tag=="call") and _name_=='[]':
         value=name(to_s(children[0]))
         _slice=map(build,children[1].getchildren())
         _slice=to_s(_slice[0])
         return Subscript(value=value,slice=_slice,ctx=Load())
-    elif tag=="Assign":
-        if not _name_ : return map(build,children) # ruby lamda etc
+    elif tag=="Assign" or tag=="assign":
+        if not _name_ :
+            name0 = children[0]
+            _name_ = build(name0).s
+            children.remove(name0)
+            # return map(build,children) # ruby lamda etc
         # if parent=="For":
         #     return name(_name_)
         if _name_[-1]=='=': _name_=_name_[0:-1] # ruby a.b=c name:'b='
@@ -361,11 +368,12 @@ def build(node,parent=None):
         elem.target=elem.target.targets[0]
     return elem
 
-xmlns=""
+xmlns="{http://angle-lang.org}"
 
+# returns [ast.Module]
 def parse_file(fileName):
     global xmlns,folder
-    if(not isinstance(fileName,file)):
+    if not isinstance(fileName, file):
         fileName=findFile(fileName)
         _file=open(fileName)
     else:
@@ -400,7 +408,7 @@ def parse_file(fileName):
 
     my_ast=build(root) # <<<<<<<<<<<< BUILD AST !!!
     # Rewriter().visit(my_ast)
-    if not isinstance(my_ast,Module):
+    if not isinstance(my_ast,Module): ## ARGGHH! BROKEN PYTHON INHERITANCE
         if(isinstance(my_ast,list)):
             my_ast=Module(body=my_ast)
         else:

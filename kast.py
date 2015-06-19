@@ -7,7 +7,7 @@ import sys
 import _ast
 
 
-class Module(mod):
+class Module(ast.Module):
     def equals(self,node,other):
         if isinstance(node,list):
             for i in len(node):
@@ -395,7 +395,8 @@ mapped_types={
     # "Args":arguments,
     # "Args":List, # Args, AAARRG!!! ;)
 
-    # "class_method":FunctionDef, # FunctionDef(name='x', args=arguments(args=[], vararg=None, kwarg=None, defaults=[]) WTF
+    "class_method":FunctionDef, # FunctionDef(name='x', args=arguments(args=[], vararg=None, kwarg=None, defaults=[]) WTF
+    # "class_method":FunctionDef, # todo !!
     "Method":FunctionDef,
     "int":Num,
     "let":Assign,
