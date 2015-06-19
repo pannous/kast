@@ -192,13 +192,19 @@ class JS6Visitor(astor.ExplicitNodeVisitor):
                        node.value)
 
     def visit_ImportFrom(self, node):
-        self.write('import ')
+        self.statement(node, 'require (\'')
         self.comma_list(node.names)
+        self.write('\')')
+
+    def visit_ImportFrom6(self, node):
+        self.write('import ') #
+        for idx, item in enumerate(node.names):
+            if idx:
+                self.write(', ')
+            self.visit(item)
+        # self.comma_list(node.names)
         if node.module:
-            self.write(node, 'from ', node.level * '.',
-                           node.module)
-        else:
-            self.write(node, 'from ', node.level)
+            self.write(' from ', node.module)
 
     def visit_Import(self, node):
         self.statement(node, 'require (')
@@ -388,7 +394,12 @@ class JS6Visitor(astor.ExplicitNodeVisitor):
     # def visit_Num(self, node):
     #     self.write(node.n)
 
+    def instanceof(self,node):
+        self.write(node.args[0]," instanceof ",node.args[1])
+
     def visit_Call(self, node):
+        if isinstance(node.func,ast.Name) and node.func.id=="isinstance": return self.instanceof(node)
+
         want_comma = []
 
         def write_comma():

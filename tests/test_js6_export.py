@@ -15,9 +15,7 @@ kast_file='kast.yml'
 # module=ast_import.parse_file("../samples/"+kast_file)
 # module=ast_import.parse_file("hi.py")
 module=ast_import.parse_file("../transforms/js6_export.py")
-
-
-print(ast.dump(module, annotate_fields=False, include_attributes=False))
+# print(ast.dump(module, annotate_fields=False, include_attributes=False))
 
 indent_with=' ' * 4
 add_line_information=False
@@ -26,7 +24,7 @@ generator.visit(module)
 js6= ''.join(str(s) for s in generator.result)
 print(js6)
 fp = open ( '/tmp/out.js',"w" )
-fp.write("'using strict' // exported via js6_export")
+fp.write('"use strict"; // exported via js6_export')
 fp.write(js6)
 # fp.writelines(...)
 fp.close()
