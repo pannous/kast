@@ -4,7 +4,9 @@
 
 # Deprecated since version 2.6: The compiler package has been removed in Python 3.   WAAAH!! WTF! egal -> breaks a lot!!
 
-# http://m-labs.hk/pythonparser/ PythonParser is a Python parser written specifically for use in TOOLING. It parses source code into an AST that is a superset of Python’s built-in ast module, but returns precise location information for every token
+# http://m-labs.hk/pythonparser/ PythonParser is a Python parser written specifically for use in TOOLING.
+#  It parses source code into an AST that is a superset of Python s built-in ast module,
+# but returns precise location information for every token
 
 import ast
 import json
@@ -55,7 +57,7 @@ def args(params):
         if str(f)=="body":
             continue
         a=params.__getattribute__(f)
-        if isinstance(a,list):a="["+" ".join(map(str,a))+"]"
+        if isinstance(a,list):a="["+" ".join(map(lambda ai: map_attribute(f,ai,""),a))+"]"
         if isinstance(a,dict):a=str(a)
         a=map_attribute(f,a)
         if a is Ignore: continue
@@ -65,17 +67,19 @@ def args(params):
     return attributes
 
 
-def map_attribute(f, a):
-    if callable(a):return Ignore
+def map_attribute(f, a,ignore=Ignore):
+    if callable(a):return ignore
+    if isinstance(a,Pass):return ignore
+
     # if isinstance(a,AST):return Ignore # no: Num, Name
-    if isinstance(a,stmt):return Ignore # later through fields
-    if isinstance(a,expr):return Ignore
-    if isinstance(a,list):return Ignore
     if isinstance(a,Num):a=a.n
     if isinstance(a,Name):a=a.id
     if isinstance(a,expr_context):a=type(a).__name__
     if isinstance(a,operator):a=type(a).__name__
     if isinstance(a,cmpop):a=type(a).__name__
+    if isinstance(a,stmt):return ignore # later through fields
+    if isinstance(a,expr):return ignore
+    if isinstance(a,list):return ignore
     yet_visited[a]=True
     return a
 
