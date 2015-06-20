@@ -199,3 +199,18 @@ def dump_xml(my_ast):
 
 if __name__ == '__main__':
     import tests.test_ast_writer
+
+
+# export?
+def emit_pyc(code,fileName='output.pyc'):
+    import marshal
+    import py_compile
+    import time
+    with open(fileName, 'wb') as fc:
+        fc.write('\0\0\0\0')
+        py_compile.wr_long(fc, long(time.time()))
+        marshal.dump(code, fc)
+        fc.flush()
+        fc.seek(0, 0)
+        fc.write(py_compile.MAGIC)
+        print("WRITTEN TO "+fileName)

@@ -436,18 +436,6 @@ def parse_files(kast_files):
     return modules
 
 
-# export?
-def emit_pyc(code,fileName='output.pyc'):
-    import marshal
-    import py_compile
-    import time
-    with open(fileName, 'wb') as fc:
-        fc.write('\0\0\0\0')
-        py_compile.wr_long(fc, long(time.time()))
-        marshal.dump(code, fc)
-        fc.flush()
-        fc.seek(0, 0)
-        fc.write(py_compile.MAGIC)
 
 # correct: Module(body=[For(target=Name(id='i', ctx=Store(), lineno=1, col_offset=4), iter=Call(func=Name(id='range', ctx=Load(), lineno=1, col_offset=9), args=[Num(n=10, lineno=1, col_offset=15)], keywords=[], starargs=None, kwargs=None, lineno=1, col_offset=9), body=[Print(dest=None, values=[Name(id='i', ctx=Load(), lineno=1, col_offset=26)], nl=True, lineno=1, col_offset=20)], orelse=[], lineno=1, col_offset=0)])
 # broken!: Module(body=[For(target=Name(id='i', ctx=Store(), lineno=0, col_offset=0), iter=Call(func=Name(id='range', ctx=Load(), lineno=0, col_offset=0), args=[Num(n='10', lineno=0, col_offset=0)], keywords=[], starargs=None, kwargs=None, lineno=0, col_offset=0), body=[Print(dest=None, values=[Name(id='i', ctx=Load(), lineno=0, col_offset=0)], nl=True, lineno=0, col_offset=0)], orelse=[], lineno=0, col_offset=0)])

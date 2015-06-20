@@ -5,6 +5,7 @@ from ast import *
 import ast
 import sys
 import _ast
+import the
 
 
 class Module(ast.Module):
@@ -14,6 +15,8 @@ class Module(ast.Module):
                 if not self.equals(node[i],other[i]):
                     return False
             return True
+        if isinstance(node,ast.Str):
+            node=node.s # ignore other fields!
         if isinstance(node,str):
             if(isinstance(other,ast.Str)):
                 return node==other.s
@@ -124,6 +127,16 @@ class Name(ast.Name):
     def __eq__(self, other):
         return self.id==other or self.id==other.id
 
+def autopos(clazz):
+    oldinit=clazz.__init__
+    def newinit(self,*args, **kwargs):
+        oldinit(self,*args,**kwargs)
+        self.col_offset=the.current_offset
+        self.lineno=the.line_number
+    clazz.__init__=newinit
+    return clazz
+
+@autopos
 class Str(ast.Str):
     def set_value(self,s):
         if isinstance(s,ast.Name):
@@ -131,7 +144,7 @@ class Str(ast.Str):
         self.s=s
     value = property(lambda self:self.s, set_value)
     name=property(lambda self:self.s,set_value)
-    def __str__(self):return s
+    def __str__(self):return self.s
 
 class For(ast.For):
     def __init__(self, **kwargs):
@@ -227,6 +240,8 @@ class FunctionDef(ast.FunctionDef):
         super(ast.FunctionDef,self).__init__(*kwargs)
 
 
+
+
 if sys.version_info > (3,0):
      # PYTHON 3 HACK!!
     class Print(stmt):
@@ -243,7 +258,9 @@ if sys.version_info > (3,0):
             'locals',
         )
 else:
+    @autopos
     class Print(ast.Print):
+        # __metaclass__ = AutoSource
         pass
 
     class arg(ast.Name):
