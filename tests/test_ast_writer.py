@@ -22,6 +22,7 @@ source="(string)" # compile from inline string source:
 # contents="x=1;x++" # INVALID!
 contents="x=6;x%=3"
 contents="def x(y):pass"
+contents="cv.CV_WINDOW_FULLSCREEN"
 #PY3:
 # Module([FunctionDef('x', arguments([arg('y', None)], None, [], [], None, []), [Pass()], [], None)])
 

@@ -5,7 +5,6 @@ from ast import *
 import ast
 import sys
 import _ast
-import the
 
 
 class Module(ast.Module):
@@ -128,12 +127,15 @@ class Name(ast.Name):
         return self.id==other or self.id==other.id
 
 def autopos(clazz):
-    oldinit=clazz.__init__
-    def newinit(self,*args, **kwargs):
-        oldinit(self,*args,**kwargs)
-        self.col_offset=the.current_offset
-        self.lineno=the.line_number
-    clazz.__init__=newinit
+    try:
+        import the
+        oldinit=clazz.__init__
+        def newinit(self,*args, **kwargs):
+            oldinit(self,*args,**kwargs)
+            self.col_offset=the.current_offset
+            self.lineno=the.line_number
+        clazz.__init__=newinit
+    except:pass
     return clazz
 
 @autopos
