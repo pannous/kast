@@ -8,7 +8,7 @@
 # ruby + clean function approach, e.g. def []=(index,values) ...
 # ruby + nicer 'and'+'or' concatenations  a?b:c or d and raise Ex
 # ruby - less modules, more beautiful language => less need for angle!
-# ruby - methods less 1st class than in python! ('ok' via method(:symbol), send)
+# ruby - methods less 1st class citizens than in python! ('ok' via method(:symbol), send)
 # ruby -: can't access variables in methods without '@' !!
 # ruby -- NO types/type hints!! (vs py3)
 # ruby -- no annotations!
