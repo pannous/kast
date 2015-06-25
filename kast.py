@@ -451,3 +451,21 @@ def call(func,args):
     if not isinstance(args,list):args=[args]
     return Call(func=func,args=args,keywords=[], starargs=None, kwargs=None)
     # Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
+
+def decorate(clazz):
+    try:
+        import the
+        oldinit=clazz.__init__
+        def newinit(self,*args, **kwargs):
+            oldinit(self,*args,**kwargs)
+            self.col_offset=the.current_offset
+            self.lineno=the.line_number
+        clazz.__init__=newinit
+    except:pass
+
+
+def decorate_all():
+    for type in types.values():
+        decorate(type)
+
+decorate_all()
