@@ -56,6 +56,7 @@
 # python - NO class extensions for builtins! (ok with 'macros' / subclass construction (?))
 # python -- stupid list arg explosion def f(*args):pass  f(1,2,3) OK l=[1,2,3] f(*l) OK  f([1,2,3]) TUPLE([1,2,3]) WTF!
 # python -- running angle ok, debugging SLOOOOOW! (same algorithm as ruby, maybe caller() is expensive?)
+# python -- STATEMENT RESULTS IGNORED!! REPL >>> 3*3  => 9 >>> _*2 => 18 OK >>> x=2 >>> _ 18 # WAAAAAAHHHHHHHH!!!!!!!!!!!!!!!!!
 # python ---- variable scope nightmare!! lambdas + block variable scope !!!!! 'nonlocal' keyword :(
 # python ---- explicit global/class(self) self.EVERYTHING!!!
 more: http://c2.com/cgi/wiki?PythonProblems

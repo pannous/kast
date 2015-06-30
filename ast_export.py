@@ -9,13 +9,15 @@
 # but returns precise location information for every token
 
 import ast
+import compiler
 import json
 import os
 from ast import *
 
 # todo: consider re-implementing with the visitor pattern, see astor.codegen
 import kast
-
+global ignore_position
+ignore_position=True
 
 class Ignore:
     pass
@@ -79,50 +81,98 @@ def map_attribute(f, a,ignore=Ignore):
     if isinstance(a,cmpop):a=type(a).__name__
     if isinstance(a,stmt):return ignore # later through fields
     if isinstance(a,expr):return ignore
+    if isinstance(a,expr_context):a=type(a).__name__
     if isinstance(a,list):return ignore
+    if isinstance(a,compiler.ast.Name):a=a.name
+    if isinstance(a,compiler.ast.Num):a=a.n
+    if isinstance(a,compiler.ast.operator):a=type(a).__name__
+    if isinstance(a,compiler.ast.cmpop):a=type(a).__name__
     yet_visited[a]=True
     return a
 
 
-class Visitor(NodeVisitor):
+def escape(param):
+    return param.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+
+
+class XmlExportVisitor(NodeVisitor):
     # def visit_arguments(self, node):
     #     print("Y")
 
     def generic_visit(self, node):
         if not node:
-            print("ERROR node is None!!")
+            # print("ERROR node is None!!")
             return
         global indent
-        tag = type(node).__name__
+        # tag = type(node).__name__
+        tag = node.__class__.__name__
+        if tag=="Discard":tag="CallFunc"
+        if tag=="CallFunc":tag="Call"
+        if tag=="From":tag="Import"
         if (isinstance(node,kast.Print) or tag=='Print'):
             pass
-        if isinstance(node,list):
-            raise "MUST NOT BE LIST: "+str(node)
+        if isinstance(node,compiler.ast.Name):
+            print("\t"*(indent)+"<Name>"+node.name+"</Name>")
+            return
+        if isinstance(node,compiler.ast.Module):
+            node=node.node #WTF
+        if isinstance(node,compiler.ast.Function):
+            node=node
+        if isinstance(node,compiler.ast.Discard):
+            node=node.expr #WTF
+        if isinstance(node,compiler.ast.Stmt):
+            node=node.nodes #WTF
+        if isinstance(node,list) or isinstance(node,tuple):
+            # raise Exception( "MUST NOT BE LIST: "+str(node))
+            for child in node:
+                self.generic_visit(child)
+            return
+        if isinstance(node,str) or isinstance(node,int):
+            if node=="OP_ASSIGN":return
+            print("\t" * (indent+1) +"<value>"+escape(str(node)))+"</value>"
+            return
         if node in yet_visited:
             return
         yet_visited[node]=True
 
-        if isinstance(node,str) or isinstance(node,int):
-            print(node)
-            return
         if isinstance(node,expr_context):return
         # if isinstance(node,operator):return
         # if isinstance(node,cmpop):return
         # help(node)
         attributes=""#+" ".join(dir(node))
 
-        goodfields=good_fields(node)
 
-        for f in dir(node):
+
+        if "asList" in dir(node):
+            indent+=1
+            print("\t" * indent + "<%s>" % (tag))
+            indent+=1
+            for child in node.asList():
+                self.generic_visit(child)
+            indent-=1
+            print("\t" * indent + "</%s>" % (tag))
+            indent-=1
+            return
+
+
+        # else:
+        goodfields=dir(node)#good_fields(node)
+
+        for f in dir(node): # Attributes
             if str(f).startswith("_"): continue
             if str(f)=="body": continue
+            if str(f)=="count": continue
+            if str(f)=="index": continue
             # if str(f)=="args": continue
-            # if str(f)==("col_offset"): continue
-            # if str(f)==("lineno"): continue
+            if ignore_position and str(f)==("col_offset"): continue
+            if ignore_position and str(f)==("lineno"): continue
             if not hasattr(node,f):
                 print("WARNING: MISSING Attribute: %s in %s !!"%(f,node))
                 continue
-            a=node.__getattribute__(f)
+            a=getattr(node,f)
+            if callable(a):a=a()
+            if isinstance(a,list) or isinstance(a,tuple): continue # do below!
+            # a=node.__getattribute__(f)
             if isinstance(a,arguments):
                 params=args(a)
                 if a is Ignore:continue
@@ -155,14 +205,20 @@ class Visitor(NodeVisitor):
             print(">")
 
         indent=indent+1
+        if tag=="Name":
+            print("\t" * (indent) + node.name)
         for f in goodfields:
             if str(f).startswith("_"): continue
-            a=node.__getattribute__(f)
+            # a=node.__getattribute__(f)
+            a=getattr(node,f)
+            if callable(a):a=a()
             if isinstance(a,expr_context):continue
-            if not isinstance(a,list):
+            if not isinstance(a,list) and not isinstance(a,tuple):
                 if a in yet_visited:continue
                 a=[a]
             if len(a)==0:continue
+            if isinstance(a[0],list):
+                a=a[0] #HACK!!
             print("\t" * (indent) + "<%s>" % (str(f)))
             for x in a:
                 if x in yet_visited: continue
@@ -174,7 +230,7 @@ class Visitor(NodeVisitor):
                 indent=indent-1
             print("\t" * (indent) + "</%s>" % (str(f)))
 
-        NodeVisitor.generic_visit(self, node)#??
+        # NodeVisitor.generic_visit(self, node)#??
         indent=indent-1
         print("\t" * indent + "</%s>" % (tag))
 
@@ -195,7 +251,7 @@ class RewriteName(NodeTransformer):
 
 
 def dump_xml(my_ast):
-    Visitor().visit(my_ast)
+    XmlExportVisitor().visit(my_ast)
 
 if __name__ == '__main__':
     import tests.test_ast_writer

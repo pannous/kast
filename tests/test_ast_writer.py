@@ -1,4 +1,5 @@
 import ast
+import compiler
 import os
 # import ast2json
 from ast import *
@@ -9,21 +10,23 @@ from astor import codegen
 import kast
 
 source=os.path.realpath(__file__)
-# source='/Users/me/angelos/kast/tests/hi.py'
+# source='/Users/me/angle/kast/tests/hi.py'
 source='/Users/me/angle/kast/ast_import.py'
+source='/Users/me/angle/core/english_parser.py'
 print(source)
 contents=open(source).readlines()# all()
 contents="\n".join(contents)
-source="(string)" # compile from inline string source:
+# contents="x.y+=1"
+# source="(string)" # compile from inline string source:
 # contents="def x():pass"
 # contents="from x import *"
 # contents="x.y=1"
 # contents="x=1;x=x+1"
 # contents="x=1;x++" # INVALID!
-contents="x=6;x%=3"
-contents="def x(y):pass"
-contents="cv.CV_WINDOW_FULLSCREEN"
-contents="return cv2.namedWindow(n, cv.CV_WINDOW_FULLSCREEN)"
+# contents="x=6;x%=3"
+# contents="def x(y):pass"
+# contents="cv.CV_WINDOW_FULLSCREEN"
+# contents="return cv2.namedWindow(n, cv.CV_WINDOW_FULLSCREEN)"
 #PY3:
 # Module([FunctionDef('x', arguments([arg('y', None)], None, [], [], None, []), [Pass()], [], None)])
 
@@ -50,18 +53,21 @@ contents="return cv2.namedWindow(n, cv.CV_WINDOW_FULLSCREEN)"
 # </AttrAssign>
 
 # It seems that the best way is using tokenize.open(): http://code.activestate.com/lists/python-dev/131251/
-# code=compile(contents, source, 'eval')# import ast -> SyntaxError: invalid syntax  NO IMPORT HERE!
+# code=compile(contents, source, 'eval')# import ast -> SyntaxError: invalid syntax import _ast NO IMPORT with >eval<!
 # code=compile(contents, source, 'exec') # code object  AH!!!
-file_ast=compile(contents, source, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
+# file_ast=compile(contents, source, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
+# file_ast=compiler.parse(contents) #  some deprecated stuff but at least it compiles successfully!
+file_ast=compiler.parseFile(source) #  some deprecated stuff but at least it compiles successfully!
+# print(file_ast)
+# file_ast=compile(contents, source, 'eval',ast.PyCF_ONLY_AST) # AAAAHHH!!!
 
 
-
-x=ast.dump(file_ast, annotate_fields=True, include_attributes=True)
-print(x)
-
-file_ast=ast.parse(contents ,source,'exec')
-x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
-print(x)
+# x=ast.dump(file_ast, annotate_fields=True, include_attributes=True)
+# print(x)
+#
+# file_ast=ast.parse(contents ,source,'exec')
+# x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
+# print(x)
 
 
 # j=ast2json.ast2json(file_ast)
@@ -109,7 +115,7 @@ my_ast=file_ast
 # my_ast=Module([Assign([Name('self.x', Store())], Num(1)),Print(None, [Name('self.x', Load())], True)])
 # my_ast=Module(body=[Assign(targets=[Attribute(value=Name(id='self', ctx=Load(), lineno=1, col_offset=0), attr='x', ctx=Store(), lineno=1, col_offset=0)], value=Num(n=1, lineno=1, col_offset=7), lineno=1, col_offset=0)])
 
-ast_export.Visitor().visit(my_ast) # => XML
+ast_export.XmlExportVisitor().visit(my_ast) # => XML
 
 source=codegen.to_source(my_ast)
 print(source) # => CODE

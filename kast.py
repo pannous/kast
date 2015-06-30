@@ -469,3 +469,11 @@ def decorate_all():
         decorate(type)
 
 decorate_all()
+
+
+def setter(k, param):
+    targets = [name(k)]
+    for t in targets:
+        t.ctx=Store()
+    param.ctx=Load()
+    return Assign(targets,param)
