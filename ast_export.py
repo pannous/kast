@@ -84,9 +84,7 @@ def map_attribute(f, a,ignore=Ignore):
     if isinstance(a,expr_context):a=type(a).__name__
     if isinstance(a,list):return ignore
     if isinstance(a,compiler.ast.Name):a=a.name
-    if isinstance(a,compiler.ast.Num):a=a.n
-    if isinstance(a,compiler.ast.operator):a=type(a).__name__
-    if isinstance(a,compiler.ast.cmpop):a=type(a).__name__
+    # if isinstance(a,compiler.ast.Num):a=a.n
     yet_visited[a]=True
     return a
 
@@ -206,7 +204,8 @@ class XmlExportVisitor(NodeVisitor):
 
         indent=indent+1
         if tag=="Name":
-            print("\t" * (indent) + node.name)
+            print("\t" * (indent) + node.id)
+            # print("\t" * (indent) + node.name)
         for f in goodfields:
             if str(f).startswith("_"): continue
             # a=node.__getattribute__(f)

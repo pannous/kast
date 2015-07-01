@@ -113,8 +113,20 @@ class arguments(ast.arguments):
 class Num(ast.Num):
     def set_value(self,n):self.n=n
     value = property(lambda self:self.n, set_value)
-
     def __repr__(self): return str(self.n)
+    def __add__(self, other):
+        self.n+=other
+        return self.n
+    def __mul__(self, other):
+        self.n*=other
+        return self.n
+    def __sub__(self, other):
+        self.n-=other
+        return self.n
+    def __div__(self, other):
+        self.n/=other
+        return self.n
+
 
 class Name(ast.Name):
     def set_name(self,id):
@@ -180,7 +192,7 @@ class Assign(ast.Assign):
 # Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')],keywords=[], starargs=None, kwargs=None
 #     Call(func=Name(id='print',ctx=Load()), args=Str('ok'),keywords=[], starargs=None, kwargs=None)
 class Call(ast.Call):
-    def __init__(self, **kwargs):
+    def __init__(self,*args, **kwargs):
         self.args=[]
         self.keywords=[]
         self.kwargs=self.starargs=None
@@ -449,9 +461,10 @@ def name(param):
 def call(func,args):
     if isinstance(func,str):    func=name(func)
     if not isinstance(args,list):args=[args]
-    return Call(func=func,args=args,keywords=[], starargs=None, kwargs=None)
+    return ast.Call(func=func,args=args,keywords=[], starargs=None, kwargs=None)
     # Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
 
+#  automatically add the current token position
 def decorate(clazz):
     try:
         import the
@@ -465,8 +478,9 @@ def decorate(clazz):
 
 
 def decorate_all():
-    for type in types.values():
-        decorate(type)
+    pass
+    # for type in types.values():
+    #     decorate(type)
 
 decorate_all()
 
@@ -477,3 +491,5 @@ def setter(k, param):
         t.ctx=Store()
     param.ctx=Load()
     return Assign(targets,param)
+
+none=name("None")

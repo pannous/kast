@@ -17,8 +17,9 @@ print(source)
 contents=open(source).readlines()# all()
 contents="\n".join(contents)
 # contents="x.y+=1"
-# source="(string)" # compile from inline string source:
+source="(string)" # compile from inline string source:
 # contents="def x():pass"
+contents="c=c+1;beep()"
 # contents="from x import *"
 # contents="x.y=1"
 # contents="x=1;x=x+1"
@@ -55,15 +56,16 @@ contents="\n".join(contents)
 # It seems that the best way is using tokenize.open(): http://code.activestate.com/lists/python-dev/131251/
 # code=compile(contents, source, 'eval')# import ast -> SyntaxError: invalid syntax import _ast NO IMPORT with >eval<!
 # code=compile(contents, source, 'exec') # code object  AH!!!
-# file_ast=compile(contents, source, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
+file_ast=compile(contents, source, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
 # file_ast=compiler.parse(contents) #  some deprecated stuff but at least it compiles successfully!
-file_ast=compiler.parseFile(source) #  some deprecated stuff but at least it compiles successfully!
+# file_ast=compiler.parseFile(source) #  some deprecated stuff but at least it compiles successfully!
 # print(file_ast)
 # file_ast=compile(contents, source, 'eval',ast.PyCF_ONLY_AST) # AAAAHHH!!!
 
 
+x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
 # x=ast.dump(file_ast, annotate_fields=True, include_attributes=True)
-# print(x)
+print(x)
 #
 # file_ast=ast.parse(contents ,source,'exec')
 # x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
