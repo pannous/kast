@@ -110,6 +110,14 @@ class arguments(ast.arguments):
         self.args=self.args+oas
     body = property(lambda self:self.args, set_args)
 
+class List(ast.List):
+    def __eq__(self, other):
+        if isinstance(other,list):
+            return self.elts==other
+        if isinstance(other,ast.List):
+            return self.elts==other.elts
+        return False
+
 class Num(ast.Num):
     def set_value(self,n):self.n=n
     value = property(lambda self:self.n, set_value)
