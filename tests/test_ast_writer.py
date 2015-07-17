@@ -19,7 +19,8 @@ contents="\n".join(contents)
 # contents="x.y+=1"
 source="(string)" # compile from inline string source:
 # contents="def x():pass"
-contents="c=c+1;beep()"
+# contents="c=c+1;beep()"
+contents="1"
 # contents="from x import *"
 # contents="x.y=1"
 # contents="x=1;x=x+1"
