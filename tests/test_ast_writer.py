@@ -13,6 +13,7 @@ source=os.path.realpath(__file__)
 # source='/Users/me/angle/kast/tests/hi.py'
 source='/Users/me/angle/kast/ast_import.py'
 source='/Users/me/angle/core/english_parser.py'
+quit()
 print(source)
 contents=open(source).readlines()# all()
 contents="\n".join(contents)
