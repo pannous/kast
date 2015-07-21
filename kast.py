@@ -23,6 +23,8 @@ class Module(ast.Module):
 
         for f in list(node._fields)+dir(node):
             if str(f).startswith("_"): continue
+            if f== "lineno": continue
+            if f== "col_offset": continue
             a=node.__getattribute__(f)
             b=other.__getattribute__(f)
             if not (type(a)==type(b) or isinstance(a,type(b))):
@@ -112,6 +114,7 @@ class arguments(ast.arguments):
 
 class List(ast.List):
     def __eq__(self, other):
+        if isinstance(other,SyntaxError):return False
         if isinstance(other,list):
             return self.elts==other
         if isinstance(other,ast.List):
