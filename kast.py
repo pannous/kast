@@ -187,7 +187,7 @@ class Assign(ast.Assign):
         if not isinstance(var,list):var=[var]
         self.targets=var
     def set_val(self,val):
-        if isinstance(val,list):val=val[0] #REALLY!!?
+        if isinstance(val,list) and len(val)==1:val=val[0] #REALLY!!?
         self.value=val
     var = property(lambda self:self.targets, set_var)
     object = property(lambda self:self.targets, set_var)
@@ -504,3 +504,4 @@ def setter(k, param):
     return Assign(targets,param)
 
 none=name("None")
+

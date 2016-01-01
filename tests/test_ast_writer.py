@@ -3,7 +3,7 @@ import compiler
 import os
 # import ast2json
 from ast import *
-import ast_export
+# import ast_export
 
 # import codegen
 from astor import codegen
@@ -13,7 +13,7 @@ source=os.path.realpath(__file__)
 # source='/Users/me/angle/kast/tests/hi.py'
 source='/Users/me/angle/kast/ast_import.py'
 source='/Users/me/angle/core/english_parser.py'
-quit()
+# quit()
 print(source)
 contents=open(source).readlines()# all()
 contents="\n".join(contents)
@@ -21,10 +21,13 @@ contents="\n".join(contents)
 source="(string)" # compile from inline string source:
 # contents="def x():pass"
 # contents="c=c+1;beep()"
-contents="1"
+# contents="1"
 # contents="from x import *"
 # contents="x.y=1"
 # contents="x=1;x=x+1"
+contents="i=7"
+# Module([Expr([Assign([Name(Str('i'), Store())], Num(7))])])
+# Module([Assign([Name('i', Store())], Num(7))])
 # contents="x=1;x++" # INVALID!
 # contents="x=6;x%=3"
 # contents="def x(y):pass"
@@ -65,8 +68,9 @@ file_ast=compile(contents, source, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
 # file_ast=compile(contents, source, 'eval',ast.PyCF_ONLY_AST) # AAAAHHH!!!
 
 
+x=ast.dump(file_ast, annotate_fields=True, include_attributes=True)
+print(x)
 x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
-# x=ast.dump(file_ast, annotate_fields=True, include_attributes=True)
 print(x)
 #
 # file_ast=ast.parse(contents ,source,'exec')
