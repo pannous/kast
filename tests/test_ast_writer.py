@@ -1,14 +1,10 @@
 import ast
-import compiler
 import os
-# import ast2json
 from ast import *
-# import ast_export
 
-# import codegen
 from astor import codegen
-import kast
-
+from kast import kast
+from kast import ast_export
 source=os.path.realpath(__file__)
 # source='/Users/me/angle/kast/tests/hi.py'
 source='/Users/me/angle/kast/ast_import.py'
@@ -22,10 +18,25 @@ source="(string)" # compile from inline string source:
 # contents="def x():pass"
 # contents="c=c+1;beep()"
 # contents="1"
+# contents="int(2.4)"
+# contents="__result__=int(2.4)"
+# contents="i=7;__result__=i-1"
+# contents="xs=[1,2,3];xs.reverse();print xs"
+# Module([Assign([Name('__re2sult__', Store())], Call(Name('int', Load()), [Num(2.3)], [], None, None))])
+# Module([Assign([Name('__result__', Store())], Call(Name('int', Load()), [Num(2.4)], [], None, None))])
+# contents="return 1" # 'return' outside function
+# contents="print(1)"
 # contents="from x import *"
 # contents="x.y=1"
+# contents="if 3>0:1\nelse:0"
+# contents="result=1 if 3>0 else 0"
 # contents="x=1;x=x+1"
-contents="i=7"
+contents="def identity(x):return x\nidentity(5)"
+# contents="def test():print 'yay'"
+# contents="def test():result=print('yay')\nresult=test()"
+# contents="def test():return print('yay')\nresult=test()"
+# contents="def test():print('yay')\nresult=test()"
+# contents="i=7;i-1"
 # Module([Expr([Assign([Name(Str('i'), Store())], Num(7))])])
 # Module([Assign([Name('i', Store())], Num(7))])
 # contents="x=1;x++" # INVALID!
@@ -94,6 +105,7 @@ print(x)
 
 # x=ast.dump(file_ast, annotate_fields=True, include_attributes=False)
 
+
 my_ast=Module(body=[
     For(
         target=Name(id='i', ctx=Store(),lineno=1, col_offset=4),
@@ -131,5 +143,8 @@ print(source) # => CODE
 my_ast=ast.fix_missing_locations(my_ast)
 code=compile(my_ast, 'file', 'exec')
 # ast_reader.emit_pyc(code)
+print("GO!")
 exec(code)
+result=eval(code)
+print(result)
 # print (self.x)

@@ -148,6 +148,8 @@ class Name(ast.Name):
 
     def __eq__(self, other):
         return self.id==other or self.id==other.id
+    def __repr__(self):
+        return str(self.id) #  for more beautiful debugging
 
 def autopos(clazz):
     try:
@@ -289,9 +291,11 @@ else:
         pass
 
     class arg(ast.Name):
-        def __init__(self, **kwargs):
+        def __init__(self, *args, **kwargs):
             self.ctx=Param()
-            super(ast.Name,self).__init__(*kwargs)
+            self.id=kwargs['name']
+            # super(arg, self).__init__(*args, **kwargs)
+            # super(ast.Name,self).__init__(*kwargs)
         # _attributes = (
         #     'lineno',
         #     'col_offset',
@@ -467,12 +471,20 @@ assert Name(id='xyz',ctx=Load())=='xyz'
 
 
 def name(param):
+    if(isinstance(param,ast.Name)):return param
+    if type(param).__name__=="Variable":
+        param=param.name
     return Name(id=param,ctx=Load())
 
 def call(func,args):
     if isinstance(func,str):    func=name(func)
     if not isinstance(args,list):args=[args]
     return ast.Call(func=func,args=args,keywords=[], starargs=None, kwargs=None)
+
+def call_attribute(obj,func,args):
+    if isinstance(func,ast.Name):func=func.id
+    if not isinstance(args,list):args=[args]
+    return ast.Call(func=ast.Attribute(value=name(obj),attr=func,ctx=Load()),args=args,keywords=[], starargs=None, kwargs=None)
     # Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
 
 #  automatically add the current token position
@@ -497,6 +509,9 @@ decorate_all()
 
 
 def setter(k, param):
+    if(isinstance( param, ast.Pass)):
+        param=None #ast.None
+        return param
     targets = [name(k)]
     for t in targets:
         t.ctx=Store()
@@ -504,4 +519,6 @@ def setter(k, param):
     return Assign(targets,param)
 
 none=name("None")
-
+false=name("False")
+true=name("True")
+zero=Num(0)

@@ -1,5 +1,6 @@
 
-# ruby +++ better blocks + lambdas !!!
+# ruby +++ better blocks + lambdas !!!:
+# ruby ++ if expression works for blocks
 # ruby ++ much more forgiving and convenient, i.e. z=map[x] vs if x in map: map[x]
 # ruby ++ nicer string templates "Variable #{type} #{name}=#{value}"
 # ruby + jruby better, class extensions
