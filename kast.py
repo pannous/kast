@@ -6,7 +6,6 @@ import ast
 import sys
 import _ast
 
-
 class Module(ast.Module):
     def equals(self,node,other):
         if isinstance(node,list):
@@ -519,6 +518,7 @@ def setter(k, param):
         param.ctx=Load()
     return Assign(targets,param)
 
+# Python 3.4 introduced a new node of type NameConstant for True,False & None.
 none=name("None")
 false=name("False")
 true=name("True")
