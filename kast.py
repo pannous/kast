@@ -515,7 +515,8 @@ def setter(k, param):
     targets = [name(k)]
     for t in targets:
         t.ctx=Store()
-    param.ctx=Load()
+    if isinstance(param,ast.Name):
+        param.ctx=Load()
     return Assign(targets,param)
 
 none=name("None")
