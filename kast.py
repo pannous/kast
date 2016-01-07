@@ -480,10 +480,14 @@ def call(func,args):
     if not isinstance(args,list):args=[args]
     return ast.Call(func=func,args=args,keywords=[], starargs=None, kwargs=None)
 
-def call_attribute(obj,func,args):
+def call_attribute(obj,func,*args,**vargs):
     if isinstance(func,ast.Name):func=func.id
     if not isinstance(args,list):args=[args]
-    return ast.Call(func=ast.Attribute(value=name(obj),attr=func,ctx=Load()),args=args,keywords=[], starargs=None, kwargs=None)
+    if args==[()]:args=[]
+    keywords=[]
+    for k,v in vargs.items():
+        keywords.append(keyword(k,v))
+    return ast.Call(func=ast.Attribute(value=name(obj),attr=func,ctx=Load()),args=args,keywords=keywords, starargs=None, kwargs=None)
     # Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
 
 #  automatically add the current token position
