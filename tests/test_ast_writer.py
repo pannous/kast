@@ -24,11 +24,11 @@ contents="def a():pass\nc=1\nif c>1:a()"
 # contents="c=c+1;beep()"
 # contents="1"
 # contents="int(2.4)"
-# contents="__result__=int(2.4)"
-# contents="i=7;__result__=i-1"
+# contents="it=int(2.4)"
+# contents="i=7;it=i-1"
 # contents="xs=[1,2,3];xs.reverse();print xs"
 # Module([Assign([Name('__re2sult__', Store())], Call(Name('int', Load()), [Num(2.3)], [], None, None))])
-# Module([Assign([Name('__result__', Store())], Call(Name('int', Load()), [Num(2.4)], [], None, None))])
+# Module([Assign([Name('it', Store())], Call(Name('int', Load()), [Num(2.4)], [], None, None))])
 # contents="return 1" # 'return' outside function
 # contents="print(1)"
 # contents="from x import *"
