@@ -136,7 +136,10 @@ class Num(ast.Num):
     def __div__(self, other):
         self.n/=other
         return self.n
-
+    def __eq__(self, other):
+        if (isinstance(other, int)):return self.n==other
+        if (isinstance(other, Num)):return self.n==other.n
+        return False
 
 class Name(ast.Name):
     def set_name(self,id):

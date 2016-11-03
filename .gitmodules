@@ -1,0 +1,3 @@
+[submodule "bulbul"]
+	path = bulbul
+	url = git@github.com:ahmedaliadeel/bulbul.git

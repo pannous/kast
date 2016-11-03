@@ -15,6 +15,7 @@
 # ruby -- no annotations!
 # ruby --- no nice dynamic programmatic properties:
             a.x=8  NoMethodError: undefined method `x='
+            workaround: OpenStruct!!!
             workaround: def a.x; 8;end
             OR a.methods << def x; 8;end  (WOW)
             OR class << a; attr_accessor :x; end and a.x=8

@@ -15,8 +15,9 @@ contents=open(source).readlines()# all()
 contents="\n".join(contents)
 # contents="x.y+=1"
 source="(string)" # compile from inline string source:
-contents="def a():pass\nc=1\nif c>1:a()"
-
+contents="from extension_functions import *"
+# contents="range(1,2)"
+# contents="def a():pass\nc=1\nif c>1:a()"
 # contents="def identity(x):return x\nz=identity"
 # contents="def a():pass\nimport threading\nt=threading.Thread(target=a)\nt.start()"
 # contents="import threading\nt=threading.Thread(target=lambda:print('HI'))\nt.start()" #Lambda Doesn't like Print statement!!
