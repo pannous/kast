@@ -98,6 +98,11 @@ class ExceptHandler(ast.ExceptHandler):
 #         name
 
 
+class Eq(ast.Eq):
+    def __str__(self):
+        return "="
+
+
 class arguments(ast.arguments):
     def __init__(self, **kwargs):
         self.args=[] #[Name(id='self',ctx=Load())]
@@ -145,7 +150,7 @@ class Name(ast.Name):
     def set_name(self,id):
         if(isinstance(id,ast.Name)):
             id=id.id #WWWTTTFFF
-        self.id=id
+        self.id=str(id)
     name=property(lambda self:self.id,set_name)
 
     def __eq__(self, other):
