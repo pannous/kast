@@ -273,7 +273,17 @@ class FunctionDef(ast.FunctionDef):
         self.args=args()
         super(ast.FunctionDef,self).__init__(*kwargs)
 
+class Eq: #how?
+    def __str__(self):
+        return "=="
 
+
+#
+# class Function(FunctionDef):
+#     pass #  extended in nodes.py
+#
+# class Condition(ast.Compare):
+#     pass  # extended in nodes.py
 
 
 if sys.version_info > (3,0):
@@ -519,7 +529,7 @@ def decorate_all():
 decorate_all()
 
 
-def setter(k, param):
+def assign(k, param):
     if(isinstance( param, ast.Pass)):
         param=None #ast.None
         return param
