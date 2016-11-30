@@ -1,6 +1,6 @@
 import os
 
-__author__ = 'me'
+__author__ = 'info@pannous.com'
 
 global folder
 # folder="/Users/me/dev/ai/english-script/test/rast/"

@@ -1,1 +1,1 @@
-__author__ = 'me'
+__author__ = 'info@pannous.com'

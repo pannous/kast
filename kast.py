@@ -277,6 +277,12 @@ class Eq: #how?
     def __str__(self):
         return "=="
 
+# def
+
+# _ast.Num.__str__=lambda self:"%d"%(self.n)
+# _ast.Eq.__str__=lambda self:"==" #lambda self:self.num
+_ast.Num.__repr__=lambda self:"%d"%(self.n)
+_ast.Eq.__repr__=lambda self:"==" #lambda self:self.num
 
 #
 # class Function(FunctionDef):
