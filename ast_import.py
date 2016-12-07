@@ -5,15 +5,25 @@
 # https://github.com/dmw/pyxser/blob/master/src/pyxser_serializer.c
 # import ast
 # from ast import *
+import _ast
 import os
 import xml.etree.ElementTree as Xml
 import re
-import __builtin__
+
 import yaml
+
+import english_parser
 import kast
+import kast.kast_util
 from kast import *
-from kast_util import *
-from transforms.kast_rewriter import *
+from kast.transforms.kast_rewriter import *
+from _ast import *
+import sys
+py2=sys.version < '3'
+py3=sys.version >= '3'
+
+if py2: import __builtin__
+import builtins as __builtin__
 
 call_map=xml =yaml.load(open("transforms/call-map.yml"))
 const_map=xml =yaml.load(open("transforms/const-map.yml"))
@@ -57,7 +67,7 @@ def parseString(a, v,tag=None):
     # if(a=='name'):return v
     # if(isinstance(v,Na)
     v=v.strip()
-    if(v.isdigit()):v=Num(int(v)) #todo: float!
+    if(v.isdigit()):v= _ast.Num(int(v)) #todo: float!
     elif(v.startswith("[") and tag!="Call" and tag!="Assign"): # too much suggar??
         args=v[1:-1].replace(","," ").split(" ")
         v=[]
@@ -167,7 +177,7 @@ def build(node,parent=None):
         xs=map(build, children)
         def bin_add(a,b):
             return BinOp(a, Add(),b)
-        xss=reduce(bin_add, xs[1:], xs[0]) # BinOp the whole list, nice Karsten++
+        xss= __builtin__.reduce(bin_add, xs[1:], xs[0]) # BinOp the whole list, nice Karsten++
         return xss
     elif(tag=="Str" or tag=="str" or tag=="var" or tag=="variable"):
         if(hasattr(node,'value')): return Str(s=node.attrib['value'])
@@ -370,11 +380,17 @@ def build(node,parent=None):
 
 xmlns="{http://angle-lang.org}"
 
+import io
+# try:
+#     file_types = (file, io.IOBase)
+# except NameError:
+file = (io.IOBase,) # fucking python 3
+
 # returns [ast.Module]
 def parse_file(fileName):
     global xmlns,folder
     if not isinstance(fileName, file):
-        fileName=findFile(fileName)
+        fileName= kast.kast_util.findFile(fileName)
         _file=open(fileName)
     else:
         _file=fileName
@@ -386,14 +402,14 @@ def parse_file(fileName):
         return parse_file(kastFile)
     elif fileName.endswith("py"):
         # contents=_file.readlines()
-        file_ast=compile(_file.read(), fileName, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
+        file_ast=compile(_file.read(), fileName, 'exec',_ast.PyCF_ONLY_AST) # AAAAHHH!!!
         for clazz in file_ast.body:
             if isinstance(clazz,ClassDef):
                 classes[clazz.name]=clazz
         return file_ast
     elif fileName.endswith("yml"):
-        from cStringIO import StringIO
-        xml =yml2xml(StringIO(),yaml.load(_file)).getvalue()
+        # from cStringIO import StringIO
+        xml =yml2xml(StringIO.StringIO(), yaml.load(_file)).getvalue()
         fileName = xml # StringIO 'file' ;)
         print(xml)
         root = Xml.fromstring(xml)
@@ -417,7 +433,7 @@ def parse_file(fileName):
     # alias
     # my_ast.body.insert(0,ImportFrom(module='parser_test_helper',names=[alias('*',None)],level=0)) #asname=None
 
-    my_ast=ast.fix_missing_locations(my_ast)
+    my_ast=_ast.fix_missing_locations(my_ast)
     modules.append(my_ast)
     for clazz in classes.values():
         fix_missing_self(clazz)

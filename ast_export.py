@@ -83,7 +83,7 @@ def map_attribute(f, a,ignore=Ignore):
     if isinstance(a,expr):return ignore
     if isinstance(a,expr_context):a=type(a).__name__
     if isinstance(a,list):return ignore
-    if isinstance(a,compiler.ast.Name):a=a.name
+    # if isinstance(a,compiler.ast.Name):a=a.name
     # if isinstance(a,compiler.ast.Num):a=a.n
     yet_visited[a]=True
     return a
@@ -195,7 +195,7 @@ class XmlExportVisitor(NodeVisitor):
         #     attribs=attribs+" %s='%s'"%(f,a)
         # print node.body
         # print("\t" * indent + "<%s%s" % (tag, attributes), end=' ')
-        print "\t" * indent + "<%s%s" % (tag, attributes),
+        print("\t" * indent + "<%s%s" % (tag, attributes), end=' ')
         if len(goodfields)==0:# and not isinstance(node,ast.Module):
             print("/>")
             return
@@ -262,8 +262,9 @@ def emit_pyc(code,fileName='output.pyc'):
     import py_compile
     import time
     with open(fileName, 'wb') as fc:
-        fc.write('\0\0\0\0')
-        py_compile.wr_long(fc, long(time.time()))
+        fc.write(b'\0\0\0\0')
+        # py_compile.wr_long(fc, long(time.time()))
+        py_compile.wr_long(fc, time.time())
         marshal.dump(code, fc)
         fc.flush()
         fc.seek(0, 0)
