@@ -370,20 +370,21 @@ else:
 		pass
 
 
-	class arg(ast.Name):
-		def __init__(self, *args, **kwargs):
-			self.ctx = Param()
-			self.id = kwargs['name']
-			# super(arg, self).__init__(*args, **kwargs)
-			# super(ast.Name,self).__init__(*kwargs)
-			# _attributes = (
-			#     'lineno',
-			#     'col_offset',
-			# )
-			# _fields = (
-			#     'arg',
-			#     'annotation',
-			# )
+class arg(ast.Name):
+	def __init__(self, name, *args, **kwargs):
+		super(arg, self).__init__(*args, **kwargs)
+		self.ctx = Param()
+		self.id = name
+		# super(arg, self).__init__(*args, **kwargs)
+		# super(ast.Name,self).__init__(*kwargs)
+		# _attributes = (
+		#     'lineno',
+		#     'col_offset',
+		# )
+		# _fields = (
+		#     'arg',
+		#     'annotation',
+		# )
 
 # class Name(ast.Name):
 #     # def __init__(self, **kwargs):
