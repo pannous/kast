@@ -196,7 +196,7 @@ class XmlExportVisitor(NodeVisitor):
         #     attribs=attribs+" %s='%s'"%(f,a)
         # print node.body
         # print("\t" * indent + "<%s%s" % (tag, attributes), end=' ')
-        print("\t" * indent + "<%s%s" % (tag, attributes), end=' ')
+        if py3: print("\t" * indent + "<%s%s" % (tag, attributes), end=' ')
         if len(goodfields)==0:# and not isinstance(node,ast.Module):
             print("/>")
             return
