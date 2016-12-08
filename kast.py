@@ -334,8 +334,6 @@ class __extends__(ast.Eq):
 
 # _ast.Num.__str__=lambda self:"%d"%(self.n)
 # _ast.Eq.__str__=lambda self:"==" #lambda self:self.num
-_ast.Num.__repr__ = lambda self: "%d" % (self.n)
-_ast.Eq.__repr__ = lambda self: "=="  # lambda self:self.num
 
 #
 # class Function(FunctionDef):

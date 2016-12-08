@@ -9,9 +9,10 @@
 # but returns precise location information for every token
 
 import ast
-import compiler
 import json
 import os
+try:import compiler
+except:print("NO compiler pyc emitter module in python3 !")
 from ast import *
 
 # todo: consider re-implementing with the visitor pattern, see astor.codegen
