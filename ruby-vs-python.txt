@@ -1,4 +1,63 @@
 
+# java: https://stackoverflow.com/questions/6680674/can-a-java-class-add-a-method-to-itself-at-runtime =>
+# http://www.jboss.org/javassist https://github.com/jboss-javassist/javassist
+# python ++ more scientific modules
+# python ++ dynamic properties
+# python ++ ironpython ok!
+# python ++ type hints (py3)
+# python ++ annotations
+# python ++ TO/FRO bytecode, NATIVE (sometimes)
+# python ++ Ast better integrated(!!) + cleaner!! + compile,exec,pyc emitter!!
+# python ++ Constructors() interchangeable with methods, can be very handy someday, and nice
+# python ++ can access variables in methods without '@' !!
+# python ++ nice list destruction a,b=[1,2] and a,b=1,2 and [a,b]=1,2 all work++
+# python + list concatenation
+# python + 'in' operator
+# python + named parameters
+# python + py2exe
+# python + ternary operator     ok = 'Yes' if condition == 'OK' else 'No'
+# python + better reflection + docs (dir, help)
+# python +- functions proper(!) 1st class citizens [problem: () not default!]
+# python +- properties ok'ish:  p=property(getter,setter)
+# python +- stricter: i.e. ruby z=map[x] (NIL) vs if x in map: map[x]
+# python +- python 'run' is significantly faster than slooow 'debug' mode
+# python -+ condition?Then:Else only via condition and Then or 'Else' trick  (todo: angle)
+# python - bizzare super(ast.ClassDef,self).__init__(*kwargs)
+# python -  python2->3 mess (if survived the 2to3 mess, your code will be unusable for those who sticked with python2)
+# python -- LESS FORGIVING! ValueError:  (fixable by angle? )
+# python -- list.remove(x): x not in list , if string.index(x): ValueError: substring not found ETC ETC
+# python -- missing SO MANY FUNCTIONS! (fixed by angle)
+# python -- unsupported operand type(s) for -: 'list' and 'list', AttributeError: 'list' object has no attribute 'each' ETC **
+# python (-) backtrace (huh?)
+# python (-) no switch/Case
+# python - annoying self. (self, : , () -> DANGEROUS!! (ok if generated?)  (fixed by angle)
+# python - NO class extensions for builtins! (ok with 'macros' / subclass construction (?))
+# python -- stupid list arg explosion def f(*args):pass  f(1,2,3) OK l=[1,2,3] f(*l) OK  f([1,2,3]) TUPLE([1,2,3]) WTF!
+# python -- running angle ok, debugging SLOOOOOW! (same algorithm as ruby, maybe caller() is expensive?) (better with py3)
+# python -- STATEMENT RESULTS IGNORED!! REPL >>> 3*3  => 9 >>> _*2 => 18 OK >>> x=2 >>> _ 18 # WAAAAHHHH!! (fixed by angle)
+# python ---- variable scope nightmare!! lambdas + block variable scope !!!!! 'nonlocal' keyword :(
+# python ---- explicit global/class(self) self.EVERYTHING!!! (fixed by angle)
+more: http://c2.com/cgi/wiki?PythonProblems
+
+# both ++ mixins  python:class Request(BaseRequest, AcceptMixin), ruby: include AcceptMixin
+# both ++ alias neu alt  python: neu=alt def neu(): alt()
+# PyPy Python written in Python, Ruby has Rubinius
+
+# What separates a mixin from multiple inheritance? Is it just a matter of semantics?
+Yes.
+
+
+** ValueError: list.remove(x): x not in list
+** RUBY: # (the.nodes - old_nodes).each{|n| n.invalidate}
+** PYTHON: ----
+	for fuck in old_nodes:
+	  if fuck in nodes:
+	     nodes.remove(fuck)
+	nodes.each(lambda n: n.invalidate())
+	# AttributeError: 'list' object has no attribute 'each' WTF -=->
+	for n in the.nodes: n.invalid()
+
+
 # ruby +++ better blocks + lambdas !!!:
 # ruby ++ if expression works for blocks
 # ruby ++ much more forgiving and convenient, i.e. z=map[x] vs if x in map: map[x]
@@ -8,9 +67,10 @@
 # ruby + def 'properties'   def y; @y; end    def y=(z); @y=z; end , see (ugly) attr_reader ...
 # ruby + clean function approach, e.g. def []=(index,values) ...
 # ruby + nicer 'and'+'or' concatenations  a?b:c or d and raise Ex
+# ruby +-: nice list destruction a,b=[1,2] and a,b=1,2 work but not [a,b]=1,2
 # ruby - less modules, more beautiful language => less need for angle!
 # ruby - methods less 1st class citizens than in python! ('ok' via method(:symbol), send)
-# ruby -: can't access variables in methods without '@' !!
+# ruby 0 can't access class variables in methods without '@' !!
 # ruby -- NO types/type hints!! (vs py3)
 # ruby -- no annotations!
 # ruby --- no nice dynamic programmatic properties:
@@ -26,64 +86,3 @@
             # http://rosettacode.org/wiki/Add_a_variable_to_a_class_instance_at_runtime#C.23
             # dynamic a = new System.Dynamic.ExpandoObject();
             # a.x = 1; // Adding a new property
-
-# java: https://stackoverflow.com/questions/6680674/can-a-java-class-add-a-method-to-itself-at-runtime =>
-# http://www.jboss.org/javassist https://github.com/jboss-javassist/javassist
-# python ++: more modules
-# python ++: dynamic properties
-# python ++: ironpython ok!
-# python ++: type hints (py3)
-# python ++: annotations
-# python ++: TO/FRO bytecode, NATIVE (sometimes)
-# python ++: Ast better integrated(!!) + cleaner!! + compile,exec,pyc emitter!!
-# python ++: Constructors() interchangeable with methods, can be very handy someday, and nice
-# python ++: can access variables in methods without '@' !!
-# python +: list concatenation
-# python +: named parameters
-# python +: py2exe
-# python +: ternary operator     ok = 'Yes' if condition == 'OK' else 'No'
-# python +: better reflection + docs (dir, help)
-# python +-: functions proper(!) 1st class citizens [problem: () not default!]
-# python +-: properties ok'ish:  p=property(getter,setter)
-# python +: 'in; operator
-# python +: stricter: i.e. ruby z=map[x] (NIL) vs if x in map: map[x]
-# python +-: python 'run' is significantly faster than slooow 'debug' mode
-# python -: bizzare super(ast.ClassDef,self).__init__(*kwargs)
-# python -- LESS FORGIVING! ValueError: list.remove(x): x not in list , if string.index(x): ValueError: substring not found ETC ETC
-# python -- missing SO MANY FUNCTIONS! :
-# python - unsupported operand type(s) for -: 'list' and 'list', AttributeError: 'list' object has no attribute 'each' ETC **
-# python (-) backtrace
-# python (-) no switch/Case
-# python - annoying self. (self, : , () -> DANGEROUS!! (ok if generated?)
-# python - NO class extensions for builtins! (ok with 'macros' / subclass construction (?))
-# python -- stupid list arg explosion def f(*args):pass  f(1,2,3) OK l=[1,2,3] f(*l) OK  f([1,2,3]) TUPLE([1,2,3]) WTF!
-# python -- running angle ok, debugging SLOOOOOW! (same algorithm as ruby, maybe caller() is expensive?)
-# python -- STATEMENT RESULTS IGNORED!! REPL >>> 3*3  => 9 >>> _*2 => 18 OK >>> x=2 >>> _ 18 # WAAAAAAHHHHHHHH!!!!!!!!!!!!!!!!!
-# python ---- variable scope nightmare!! lambdas + block variable scope !!!!! 'nonlocal' keyword :(
-# python ---- explicit global/class(self) self.EVERYTHING!!!
-more: http://c2.com/cgi/wiki?PythonProblems
-
-# both ++ mixins  python:class Request(BaseRequest, AcceptMixin), ruby: include AcceptMixin
-# both ++ alias neu alt  python: neu=alt def neu(): alt()
-# PyPy Python written in Python, Ruby has Rubinius
-
-# What separates a mixin from multiple inheritance? Is it just a matter of semantics?
-Yes.
-
-
-** ValueError: list.remove(x): x not in list
-** RUBY: # (the.nodes - old_nodes).each{|n| n.invalidate}
-** PYTHON: -- for fuck in old_nodes:
-                if fuck in nodes:
-                    nodes.remove(fuck)
-            the.nodes.each(lambda n: n.invalidate())
-            AttributeError: 'list' object has no attribute 'each' WTF -=->
-for n in the.nodes: n.invalid()
-
-def dispatch printType(Void x) {
-  "it's null"
-}
-
-to print an empty car:
-  "it's null"
-
