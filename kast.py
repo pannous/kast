@@ -546,13 +546,20 @@ for k in types.keys():
 types.update(mapped_types)
 
 assert Name(id='xyz', ctx=Load()) == 'xyz'
-
+# Equality hack
 
 def name(param):
 	if (isinstance(param, ast.Name)): return param
 	if type(param).__name__ == "Variable":
 		param = param.name
 	return Name(id=param, ctx=Load())
+
+
+def store(param):
+	if (isinstance(param, ast.Name)): return param
+	if type(param).__name__ == "Variable":
+		param = param.name
+	return Name(id=param, ctx=Store())
 
 
 def call(func, args):
@@ -573,6 +580,22 @@ def call_attribute(obj, func, *args, **vargs):
 	# Call(func=Attribute(value=Name(id='a', ctx=Load()), attr='split', ctx=Load()), args=[Str(s='b')]
 
 
+def assign(k, param):
+	if (isinstance(param, ast.Pass)):
+		param = None  # ast.None
+		return param
+	targets = [name(k)]
+	for t in targets:
+		t.ctx = Store()
+	if isinstance(param, ast.Name):
+		param.ctx = Load()
+	return Assign(targets, param)
+
+def num(n):
+	if isinstance(n,Num):return n
+	return Num(n)
+
+
 #  automatically add the current token position
 def decorate(clazz):
 	try:
@@ -591,27 +614,15 @@ def decorate(clazz):
 
 def decorate_all():
 	pass
-	# for type in types.values():
-	#     decorate(type)
-
-
+# for type in types.values():
+#     decorate(type)
 decorate_all()
-
-
-def assign(k, param):
-	if (isinstance(param, ast.Pass)):
-		param = None  # ast.None
-		return param
-	targets = [name(k)]
-	for t in targets:
-		t.ctx = Store()
-	if isinstance(param, ast.Name):
-		param.ctx = Load()
-	return Assign(targets, param)
-
 
 # Python 3.4 introduced a new node of type NameConstant for True,False & None.
 none = name("None")
+nil = name("None")
+null = name("None")
 false = name("False")
 true = name("True")
+Self = name('self')
 zero = Num(0)
