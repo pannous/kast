@@ -1,29 +1,36 @@
+“batteries included”
 
 # java: https://stackoverflow.com/questions/6680674/can-a-java-class-add-a-method-to-itself-at-runtime =>
 # http://www.jboss.org/javassist https://github.com/jboss-javassist/javassist
-# python ++ more scientific modules
+# python ++ scientific modules
 # python ++ dynamic properties
 # python ++ ironpython ok!
 # python ++ type hints (py3)
 # python ++ annotations
 # python ++ TO/FRO bytecode, NATIVE (sometimes)
-# python ++ Ast better integrated(!!) + cleaner!! + compile,exec,pyc emitter!!
+# python ++ Ast better integrated(!!) + clean!! + compile,exec,pyc emitter!!
 # python ++ Constructors() interchangeable with methods, can be very handy someday, and nice
-# python ++ can access variables in methods without '@' !!
+# python ++ can access variables in methods without '@' !! but need self!?
 # python ++ nice list destruction a,b=[1,2] and a,b=1,2 and [a,b]=1,2 all work++
-# python + list concatenation
 # python + 'in' operator
 # python + named parameters
 # python + py2exe
 # python + ternary operator     ok = 'Yes' if condition == 'OK' else 'No'
 # python + better reflection + docs (dir, help)
-# python +- functions proper(!) 1st class citizens [problem: () not default!]
+# python + list concatenation [a for a in b]  but NOT [1,2]-[2]
+# python - combined list concatenation [a for a in I_HAVE_NO_CLUE]
+# python +- functions proper(!) 1st class citizens [result: () not default]
 # python +- properties ok'ish:  p=property(getter,setter)
 # python +- stricter: i.e. ruby z=map[x] (NIL) vs if x in map: map[x]
 # python +- python 'run' is significantly faster than slooow 'debug' mode
+# python 0 no switch
+# python - no "do ... until <condition>"
+# python - no interfaces
+# python - at least 5 different types of (incompatible) lists  https://jacobian.org/writing/hate-python/
 # python -+ condition?Then:Else only via condition and Then or 'Else' trick  (todo: angle)
+# python - The syntax for tuples, x, is very subtle. If you add a comma to an expression, it turns into a tuple. 1,0+2=(1,2)
 # python - bizzare super(ast.ClassDef,self).__init__(*kwargs)
-# python -  python2->3 mess (if survived the 2to3 mess, your code will be unusable for those who sticked with python2)
+# python --  python2->3 mess (if survived the 2to3 mess, your code will be unusable for those who sticked with python2)
 # python -- LESS FORGIVING! ValueError:  (fixable by angle? )
 # python -- list.remove(x): x not in list , if string.index(x): ValueError: substring not found ETC ETC
 # python -- missing SO MANY FUNCTIONS! (fixed by angle)
