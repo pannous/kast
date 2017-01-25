@@ -1,4 +1,3 @@
-# coding: interpy #{'ruby strings'}
 from cStringIO import StringIO
 
 fileName   ='test.kast.xml'
@@ -15,11 +14,14 @@ def yml2xml(builder, body, tabs=0):
         val=val or isinstance(v,str)
         val=val or isinstance(v,bool)
         if val:
-            builder.write( "\t"*tabs+"<#{k}>#{v}</#{k}>\n")
+            # builder.write( "\t"*tabs+"<#{k}>#{v}</#{k}>\n")
+            builder.write( "\t"*tabs+"<%s>%s</%s>\n"%(k,v,k))
+
         else:
-            builder.write( "\t"*tabs+"<#{k}>\n")
+            builder.write( "\t"*tabs+"<"+k+">\n")
             yml2xml(builder, v, tabs+1)
-            builder.write("\t"*tabs+"</#{k}>\n")
+            builder.write("\t"*tabs+"</"+k+">\n")
+
     if (tabs==0 and len(body)>1): builder.write("</module>")
     return builder
 
