@@ -12,6 +12,7 @@
 # python ++ Constructors() interchangeable with methods, can be very handy someday, and nice
 # python ++ can access variables in methods without '@' !! but need self!?
 # python ++ nice list destruction a,b=[1,2] and a,b=1,2 and [a,b]=1,2 all work++
+# python ++ help(function) +++ ! dir()
 # python + 'in' operator
 # python + named parameters
 # python + py2exe
@@ -29,7 +30,7 @@
 # python - at least 5 different types of (incompatible) lists  https://jacobian.org/writing/hate-python/
 # python -+ condition?Then:Else only via condition and Then or 'Else' trick  (todo: angle)
 # python - The syntax for tuples, x, is very subtle. If you add a comma to an expression, it turns into a tuple. 1,0+2=(1,2)
-# python - bizzare super(ast.ClassDef,self).__init__(*kwargs)
+# python - bizarre super(ast.ClassDef,self).__init__(*kwargs)
 # python --  python2->3 mess (if survived the 2to3 mess, your code will be unusable for those who sticked with python2)
 # python -- LESS FORGIVING! ValueError:  (fixable by angle? )
 # python -- list.remove(x): x not in list , if string.index(x): ValueError: substring not found ETC ETC
