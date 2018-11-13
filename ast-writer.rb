@@ -8,7 +8,7 @@ require "yaml"
 # https://rubygems.org/gems/ast
 
 # file="../test/unit/condition_test.rb"
-# file="../src/core/english-parser.rb"
+# file="../src/english-parser.rb"
 
 @map={}
 # <FCall name='require'> => require<im
@@ -96,7 +96,7 @@ end
 
 if __FILE__==$0 # shell main
   # this will only run if the script was the main, not load'd or require'd
-  # file="/Users/me/dev/ai/english-script/src/core/extensions.rb"
+  # file="/Users/me/dev/ai/english-script/src/extensions.rb"
   # dump_xml(file)
   load_map
 
