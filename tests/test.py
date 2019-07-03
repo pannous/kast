@@ -9,14 +9,15 @@ def generator_side_effect_assignment_hack():
     [0 for a.value in ['hacky']]
 
 generator_side_effect_assignment_hack()
-print a.value
+print(a.value)
+
 
 # a.value='3'
 def lambda_hack():
     filter(lambda x:[0 for a.value in ['much hacky!']],[0])
 
 lambda_hack()
-print a.value
+print(a.value)
 
 global x
 x=8
@@ -31,5 +32,5 @@ def test_global_hack():
     [0 for y in [1]]
     z[0]='YAY'
 test_global_hack()
-print y #NO!
-print z
+print(y)  # NO!
+print(z)

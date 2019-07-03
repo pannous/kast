@@ -2,6 +2,7 @@ import ast
 import astor
 import astor.codegen
 import sys
+exit(0)
 import ast_import
 import transforms.js6_export
 

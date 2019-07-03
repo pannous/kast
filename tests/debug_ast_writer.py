@@ -5,17 +5,6 @@ from ast import *
 from astor import codegen
 from kast import kast
 from kast import ast_export
-source=os.path.realpath(__file__)
-# source='/Users/me/angle/kast/tests/hi.py'
-source='/Users/me/angle/kast/ast_import.py'
-source='/Users/me/angle/angle/english_parser.py'
-# quit()
-print(source)
-contents=open(source).readlines()# all()
-contents="\n".join(contents)
-# contents="x.y+=1"
-source="(string)" # compile from inline string source:
-contents="from extension_functions import *"
 # contents="range(1,2)"
 # contents="def a():pass\nc=1\nif c>1:a()"
 # contents="def identity(x):return x\nz=identity"
@@ -74,6 +63,8 @@ contents="from extension_functions import *"
 # 		<Str value='/Users/me'/> << VALUE!!
 # 	</Array>
 # </AttrAssign>
+contents="x=None"
+source="(string)" # compile from inline string source:
 
 # It seems that the best way is using tokenize.open(): http://code.activestate.com/lists/python-dev/131251/
 # code=compile(contents, source, 'eval')# import ast -> SyntaxError: invalid syntax import _ast NO IMPORT with >eval<!
@@ -83,12 +74,27 @@ file_ast=compile(contents, source, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
 # file_ast=compiler.parseFile(source) #  some deprecated stuff but at least it compiles successfully!
 # print(file_ast)
 # file_ast=compile(contents, source, 'eval',ast.PyCF_ONLY_AST) # AAAAHHH!!!
-
-
 x=ast.dump(file_ast, annotate_fields=True, include_attributes=True)
 print(x)
 x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
 print(x)
+
+# source=os.path.realpath(__file__)
+# # source='/Users/me/angle/kast/tests/hi.py'
+# source='kast/ast_import.py'
+# source='angle/english_parser.py'
+# # quit()
+# print(source)
+# contents=open(source).readlines()# all()
+# contents="\n".join(contents)
+# # contents="x.y+=1"
+# contents="from extension_functions import *"
+# file_ast=compile(contents, source, 'exec',ast.PyCF_ONLY_AST) # AAAAHHH!!!
+#
+# x=ast.dump(file_ast, annotate_fields=True, include_attributes=True)
+# print(x)
+# x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
+# print(x)
 #
 # file_ast=ast.parse(contents ,source,'exec')
 # x=ast.dump(file_ast, annotate_fields=False, include_attributes=False)
@@ -141,7 +147,7 @@ my_ast=file_ast
 # my_ast=Module([Assign([Name('self.x', Store())], Num(1)),Print(None, [Name('self.x', Load())], True)])
 # my_ast=Module(body=[Assign(targets=[Attribute(value=Name(id='self', ctx=Load(), lineno=1, col_offset=0), attr='x', ctx=Store(), lineno=1, col_offset=0)], value=Num(n=1, lineno=1, col_offset=7), lineno=1, col_offset=0)])
 
-ast_export.XmlExportVisitor().visit(my_ast) # => XML
+# ast_export.XmlExportVisitor().visit(my_ast) # => XML
 
 source=codegen.to_source(my_ast)
 print(source) # => CODE
