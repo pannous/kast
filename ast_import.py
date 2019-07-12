@@ -384,7 +384,7 @@ import io
 # try:
 #     file_types = (file, io.IOBase)
 # except NameError:
-file = (io.IOBase,) # fucking python 3
+file = (io.IOBase,) # grr python 3
 
 # returns [ast.Module]
 def parse_file(fileName):

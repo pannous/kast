@@ -20,7 +20,7 @@ from kast import ast_export
 # Module([Assign([Name('__re2sult__', Store())], Call(Name('int', Load()), [Num(2.3)], [], None, None))])
 # Module([Assign([Name('it', Store())], Call(Name('int', Load()), [Num(2.4)], [], None, None))])
 # contents="return 1" # 'return' outside function
-# contents="print(1)"
+# contents="print(1)" #  Module([Expr(Call(Name('print', Load()), [Num(1)], []))])
 # contents="from x import *"
 # contents="x.y=1"
 # contents="if 3>0:1\nelse:0"
@@ -56,6 +56,13 @@ from kast import ast_export
 # contents="class T:pass\ndef test(self):self.x=1\nz=T();test(z);print(z.x)" #Assign([Attribute(Name('self', Load()), attr='x', Store())], Num(1))
 # contents="x[1]" # Subscript(Name('x', Load()), Index(Num(1)), Load()))
 # contents="x[1]=3" # Assign(targets=[Subscript(Name('x', Load()), Index(Num(1)), Store())], value=Num(3))
+# contents="None" #Module([Expr(NameConstant(None))])
+contents="def id(x): return x" # FunctionDef('id', arguments([arg('x', None)]), [Return(Name('x', Load()))])
+
+source="(string)" # compile from inline string source:
+
+
+
 # <AttrAssign name='[]='>
 # 	<VCall name='variables'/>
 # 	<Array>
@@ -63,8 +70,6 @@ from kast import ast_export
 # 		<Str value='/Users/me'/> << VALUE!!
 # 	</Array>
 # </AttrAssign>
-contents="x=None"
-source="(string)" # compile from inline string source:
 
 # It seems that the best way is using tokenize.open(): http://code.activestate.com/lists/python-dev/131251/
 # code=compile(contents, source, 'eval')# import ast -> SyntaxError: invalid syntax import _ast NO IMPORT with >eval<!
