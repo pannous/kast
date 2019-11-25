@@ -256,10 +256,10 @@ class Assign(ast.Assign):
 #     Call(func=Name(id='print',ctx=Load()), args=Str('ok'),keywords=[], starargs=None, kwargs=None)
 class Call(ast.Call):
 	def __init__(self, *args, **kwargs):
+		self.func = None  # Attribute(value=Name(id='self',ctx=Load()),attr=None,ctx=Load())
 		self.args = []
 		self.keywords = []
 		self.kwargs = self.starargs = None
-		self.func = None  # Attribute(value=Name(id='self',ctx=Load()),attr=None,ctx=Load())
 		super(ast.Call, self).__init__(*kwargs)
 
 	def set_method(self, method):
